@@ -2,40 +2,59 @@ import json
 import Elevator
 
 
-# PLAN!!!
-#jason - intiate
-#distrabusion maybe by planning
-#                  for i in calls:
-#                      advance time by call
-#                      re calculate elvator states
-#                      Assighn()
-#
+class bulding:
+
+    def __init__(self, bulding):
+
+        initiation_data = {}
+        try:
+            with open(bulding, "r+") as r:
+                initiation_data = json.load(r)
+        except IOError as e:
+            print(e)
+
+        self.min = initiation_data["_minFloor"]
+        self.max = initiation_data["_maxFloor"]
+        self.elevators = initiation_data["_elevators"]
+
+        self.control_panel = []
+        for i in range(len(self.elevators)):
+            l = []
+            self.control_panel.append(l)
+
+        for i in range(len(self.elevators)):
+            self.elevators[i] = self.initiate_elvator(self.elevators[i])
 
 
-def initiate_elvator(data):
-    elev = Elevator()
-    #.....
+
+    def initiate_elvator(data):
+        elev = Elevator()
+        elev.speed = data["_speed"]
+        elev.closeTime = data["_closeTime"]
+        elev.openTime = data["_openTime"]
+        elev.startTime = data["_startTime"]
+        elev.stopTime = data["_stopTime"]
+        return elev
 
 
-def Assighnment(bulding, calls, output):
 
-    initiation_data = {}
-    try:
-        with open(bulding, "r+") as r:
-            initiation_data = json.load(r)
-    except IOError as e:
-        print(e)
+    def TravelTime(self, elev_num):
+        time = 0
+        surce = self.elevators[elev_num].flour()
 
-    min = initiation_data["_minFloor"]
-    max = initiation_data["_maxFloor"]
-    elevators = initiation_data["_elevators"]
+        for dest in self.control_panel[elev_num]:
+            time += self.elevators[elev_num].Time(surce, dest)
+            sursce = dest
 
-    control_panel = []
-    for i in range(len(elevators)):
-        l = []
-        control_panel.append(l)
+        return time
 
-    for i in range(len(elevators)):
-        elevators[i] = initiate_elvator(elevators[i])
+    def Activate(self, input):
+        pass#return output
+    def Assighn_Fastest_Option(self):
+        pass
+
+
+
+
 
 

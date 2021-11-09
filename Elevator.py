@@ -1,3 +1,5 @@
+import math
+
 class elevator:
     def __init__(self) -> None:
         self.speed = 0
@@ -8,3 +10,6 @@ class elevator:
 
         self.state = 0 #0 -resting, -1 -gowing down, 1 -going up
         self.flour = 0
+
+    def Time(self, surce, dest):
+        return ((math.fabs(surce - dest)) / self.speed) + self.openTime + self.closeTime
