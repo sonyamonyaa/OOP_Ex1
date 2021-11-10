@@ -1,5 +1,16 @@
 import json
-import Elevator
+import csv
+from Elevator import elevator
+
+
+def initiate_elvator(data):
+    elev = elevator()
+    elev.speed = data[1]
+    elev.closeTime = data[4]
+    elev.openTime = data[5]
+    elev.startTime = data[6]
+    elev.stopTime = data[7]
+    return elev
 
 
 class bulding:
@@ -15,26 +26,16 @@ class bulding:
 
         self.min = initiation_data["_minFloor"]
         self.max = initiation_data["_maxFloor"]
-        self.elevators = initiation_data["_elevators"]
+
+        self.elevators = []
+        elevators_data = initiation_data["_elevators"]
+        for i in range(len(elevators_data)):
+            self.elevators.append(initiate_elvator(list(elevators_data[i].values())))
 
         self.control_panel = []
         for i in range(len(self.elevators)):
             l = []
             self.control_panel.append(l)
-
-        for i in range(len(self.elevators)):
-            self.elevators[i] = self.initiate_elvator(self.elevators[i])
-
-
-
-    def initiate_elvator(data):
-        elev = Elevator()
-        elev.speed = data["_speed"]
-        elev.closeTime = data["_closeTime"]
-        elev.openTime = data["_openTime"]
-        elev.startTime = data["_startTime"]
-        elev.stopTime = data["_stopTime"]
-        return elev
 
 
 
@@ -49,6 +50,21 @@ class bulding:
         return time
 
     def Activate(self, input):
+        time = 0
+        try:
+            with open(input) as file:
+                csvr = csv.reader(file)
+        except IOError as e:
+            print(e)
+
+        #for row in csvr:
+        #    dt
+        #    call
+        #    recalculate
+        #    assign
+
+
+
         pass#return output
     def Assighn_Fastest_Option(self):
         pass
