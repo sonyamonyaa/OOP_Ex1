@@ -1,6 +1,30 @@
 import json
 import csv
 from Elevator import elevator
+from Call import call
+
+
+def getFlow(self, Path):
+    rows = []
+
+    try:
+        with open(Path, 'r') as fl:
+            csvr = csv.reader(fl)
+            for row in csvr:
+                rows.append(row)
+    except IOError as e:
+        print(e)
+
+    return rows
+
+def write_answeres(data, output):
+    try:
+        with open(output, 'w') as fl:
+            csvw = csv.writer(fl)
+            csvw.writerows(data)
+    except IOError as e:
+        print(e)
+
 
 
 def initiate_elvator(data):
@@ -49,28 +73,26 @@ class bulding:
 
         return time
 
-    def Activate(self, input):
-        time = 0
-        try:
-            with open(input) as file:
-                csvr = csv.reader(file)
-        except IOError as e:
-            print(e)
+    def Activate(self, input, output): #diractories
+        Time = 0
+        Flow = getFlow(input)
 
-        #for row in csvr:
-        #    dt
-        #    call
-        #    recalculate
-        #    assign
+        for step in Flow:
+            c = call(step[2], step[3])
+            newTime = step[1]
+            dt = newTime - Time
+            self.recalculate(dt)
+            decision = self.Assighn_Fastest_Option(c)
+            Time = newTime
+            step[5] = decision
+
+        write_answeres(output, Flow)
 
 
 
-        pass#return output
-    def Assighn_Fastest_Option(self):
+    def Assighn_Fastest_Option(self, call):
         pass
 
 
-
-
-
-
+    def recalculate(self, dt):  #dt is the passage of time(d - differnce)
+        pass

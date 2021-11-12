@@ -22,8 +22,8 @@ class elevator:
         s += "flour: " + str(self.flour)
         return s
 
-        self.state = 0 #0 -resting, -1 -gowing down, 1 -going up
+        self.state = 0 #0 -resting, -1 -going down, 1 -going up
         self.flour = 0
 
-    def Time(self, surce, dest):
-        return ((math.fabs(surce - dest)) / self.speed) + self.openTime + self.closeTime
+    def Time(self, source, dest):
+        return ((math.fabs(source - dest)) / self.speed) + self.openTime + self.closeTime + self.startTime + self.stopTime
