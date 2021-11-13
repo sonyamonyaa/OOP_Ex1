@@ -1,10 +1,11 @@
 import csv
 
-def getCalls(Path):
+
+def getCalls(path):
     rows = []
 
     try:
-        with open(Path, 'r') as fl:
+        with open(path, 'r') as fl:
             csvr = csv.reader(fl)
             rows = []
             for row in csvr:
@@ -14,24 +15,19 @@ def getCalls(Path):
 
     return rows
 
-def answere(Path, data):
 
+def answer(path, data):
     for i in data:
         i.append('2')
 
     try:
-        with open(Path, 'w') as fl:
+        with open(path, 'w') as fl:
             csvw = csv.writer(fl)
             csvw.writerows(data)
     except IOError as e:
         print(e)
 
 
-
-
-
-
-
 if __name__ == '__main__':
     Path = r"C:\Users\ישראל\Downloads\computer sincse\OOP\Assignments\Ex1\data\Ex1_Calls_case_2_b.csv"
-    answere(Path, getCalls(Path))
+    answer(Path, getCalls(Path))

@@ -1,4 +1,4 @@
-class call:
+class Call:
     def __init__(self, src, dest):
         self.src = src
         self.dest = dest
