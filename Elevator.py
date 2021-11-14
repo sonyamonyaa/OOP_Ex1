@@ -27,5 +27,13 @@ class Elevator:
         self.flour = 0
 
     def time(self, source, dest):
-        return ((math.fabs(
-            source - dest)) / self.speed) + self.openTime + self.closeTime + self.startTime + self.stopTime
+        t = ((math.fabs(source - dest)) / self.speed)\
+            + self.openTime + self.closeTime + self.startTime + self.stopTime
+
+        if source == self.flour:
+            t -= self.stopTime
+
+        if source == dest:
+            t = self.openTime + self.closeTime
+
+        return t

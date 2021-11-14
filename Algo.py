@@ -28,13 +28,25 @@ def write_answers(data, output):
 
 
 def initiate_elevator(data):
-    elev = Elevator()
+    elev = Elevator.Elevator()
     elev.speed = data[1]
     elev.closeTime = data[4]
     elev.openTime = data[5]
     elev.startTime = data[6]
     elev.stopTime = data[7]
     return elev
+
+def addAscend(lst, val):
+    i = 0
+    while lst[i] < val:
+        i +=1
+    lst.insert(i, val)
+
+def addDescend(lst, val):
+    i = 0
+    while lst[i] > val:
+        i += 1
+    lst.insert(i, val)
 
 
 class Building:
@@ -61,13 +73,27 @@ class Building:
             l = []
             self.control_panel.append(l)
 
-    def travel_time(self, elev_num):
+    def travel_time(self, elev_num, call: Call):
         time = 0
-        source = self.elevators[elev_num].flour()
+        source = self.elevators[elev_num].flour
+        missions = self.control_panel[elev_num]
 
-        for dest in self.control_panel[elev_num]:
-            time += self.elevators[elev_num].time(source, dest)
-            source = dest
+        if self.elevators[elev_num].state == 1:
+            i = 0
+            while (i < len(missions)) & (missions[i] < call.src):
+                dest = missions[i]
+                time += self.elevators[elev_num].time(source, dest)
+                source = dest
+                i +=1
+        else:
+            i = 0
+            while (i < len(missions)) and (missions[i] > call.src):
+                dest = missions[i]
+                time += self.elevators[elev_num].time(source, dest)
+                source = dest
+                i +=1
+
+        time += self.elevators[elev_num].time(source, call.src)
 
         return time
 
@@ -91,7 +117,7 @@ class Building:
         c_src = call.src
         c_dest = call.dest
         min_time = self.elevators[0].time(c_src, c_dest)
-        min_elev = -1
+        min_elev = 0
         # find elevators with same state / at zero state
         for (i, elev) in self.elevators:
             if elev.state == 0:
@@ -108,8 +134,40 @@ class Building:
                     if min_time > curr_time:
                         min_time = curr_time
                         min_elev = i
+
         # append Call in control panel
+        elev = self.elevators[min_elev]
+        elev_missions = self.control_panel[min_elev]
+        if elev.state == 1:
+            addAscend(elev_missions, c_src)
+            addAscend(elev_missions, c_dest)
+        elif elev.state == -1:
+            addDescend(elev_missions, c_src)
+            addDescend(elev_missions, c_dest)
+        else:
+            elev.state = c_type
+            elev_missions.append(c_src)
+            elev_missions.append(c_dest)
+
         return min_elev
 
     def recalculate(self, dt):  # dt is the passage of time(d - differnce)
-        pass
+        for i in range(len(self.control_panel)):
+            self.advance(i, dt)
+
+    def advance(self, i, dt):
+        elev = self.elevators[i]
+        while(dt > 0):
+            dest = self.control_panel[i][0]
+
+            t = elev.time(elev.flour, dest)
+            if t <= dt:
+                dt -= t
+                elev.flour = dest
+                self.control_panel[i].pop(0)
+            else:
+                if elev.flour - dest < 0:
+                    elev.flour += dt * elev.speed
+                else:
+                    elev.flour -= dt * elev.speed
+
