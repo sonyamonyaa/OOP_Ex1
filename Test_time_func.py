@@ -34,7 +34,7 @@ if __name__ == '__main__':
     elevs[3].state = 1
     elevs[4].state = 0
 
-    #diseresing elevators
+    #distrebuting elevators
     for i in range(len(calls)):
         bld.control_panel[i] = calls[i]
 
@@ -51,3 +51,26 @@ if __name__ == '__main__':
     print(expected_result[2] == bld.travel_time(2, Call.Call(new_calls[2], 16)))
     print(expected_result[3] == bld.travel_time(3, Call.Call(new_calls[3], 51)))
     print(expected_result[4] == bld.travel_time(4, Call.Call(new_calls[4], 5)))
+
+    #tesr for 'recalculate
+    for elev in bld.elevators:
+        print(elev)
+    print(bld.control_panel)
+
+
+
+    bld.recalculate(10)
+
+    expected_remaning_calls = [[1,3,5,6],
+                               [-1, -3,-7],
+                               [20],
+                               [100],
+                               []]
+
+
+    for i in range(len(bld.elevators)):
+        print(expected_remaning_calls[i] == bld.control_panel[i])
+
+    for i in range(len(bld.elevators)):
+        print(bld.elevators[i].flour)
+

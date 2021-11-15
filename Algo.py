@@ -4,7 +4,7 @@ import Elevator
 import Call
 
 
-def get_flow(self, path):
+def get_flow(path):
     rows = []
 
     try:
@@ -70,8 +70,7 @@ class Building:
 
         self.control_panel = []
         for i in range(len(self.elevators)):
-            l = []
-            self.control_panel.append(l)
+            self.control_panel.append([])
 
     def travel_time(self, elev_num, call: Call):
         time = 0
@@ -156,18 +155,29 @@ class Building:
             self.advance(i, dt)
 
     def advance(self, i, dt):
+        if len(self.control_panel[i]) == 0:
+            return
         elev = self.elevators[i]
-        while(dt > 0):
+
+        while(dt > 0):                  #while there is time
             dest = self.control_panel[i][0]
 
             t = elev.time(elev.flour, dest)
-            if t <= dt:
-                dt -= t
+            if t <= dt:                         #if possibale go to the next location
                 elev.flour = dest
                 self.control_panel[i].pop(0)
-            else:
-                if elev.flour - dest < 0:
-                    elev.flour += dt * elev.speed
-                else:
-                    elev.flour -= dt * elev.speed
+                dt -= t
+            elif t - elev.openTime - elev.stopTime <= dt:          # if you can reach destination but
+                elev.flour = dest                                  # not yet can stop and open
+                break
+            else:                                                  # if you cant reach at all
+                dt -= elev.startTime + elev.closeTime              #close and start moving
+                if dt > 0:                                         #if you atlist managed that
+                    elev.inMotion = True                           #you will advance a bit
+                    if dest - elev.flour > 0:
+                        elev.flour += dt * elev.speed    #going upwards
+                    else:
+                        elev.flour -= dt * elev.speed    #      downwards
+
+
 
