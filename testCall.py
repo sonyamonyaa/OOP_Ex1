@@ -2,7 +2,7 @@ import unittest
 import Call
 
 
-class MyTestCase(unittest.TestCase):
+class CallTestCase(unittest.TestCase):
     def test_call_init(self):
         c = Call.Call(1, 2)
         self.assertEqual(c.src, 1)
