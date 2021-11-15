@@ -11,7 +11,7 @@ class Elevator:
         self.stopTime = stop
 
         self.state = 0  # 0 - resting, -1 - going down, 1 - going up
-        self.flour = 0
+        self.floor = 0
         self.inMotion = False
 
     def __str__(self):
@@ -21,11 +21,11 @@ class Elevator:
         s += "startTime: " + str(self.startTime) + ", "
         s += "stopTime: " + str(self.stopTime) + ", "
         s += "state: " + str(self.state) + ", "
-        s += "flour: " + str(self.flour)
+        s += "floor: " + str(self.floor)
         return s
 
         self.state = 0  # 0 - resting, -1 - going down, 1 - going up
-        self.flour = 0
+        self.floor = 0
 
     def time(self, source, dest):
         t = ((math.fabs(source - dest)) / self.speed) + self.openTime + self.closeTime + self.startTime + self.stopTime

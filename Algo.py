@@ -74,7 +74,7 @@ class Building:
 
     def travel_time(self, elev_num, call: Call):
         time = 0
-        source = self.elevators[elev_num].flour
+        source = self.elevators[elev_num].floor
         missions = self.control_panel[elev_num]
 
         if self.elevators[elev_num].state == 1:
@@ -101,15 +101,19 @@ class Building:
         flow = get_flow(input)
 
         for step in flow:
-            c = Call(step[2], step[3])
-            new_time = step[1]
+            if len(step) == 0:
+                continue
+
+            c = Call.Call(int(step[2]), int(step[3]))
+            new_time = float(step[1])
             dt = new_time - time
             self.recalculate(dt)
-            decision = self.assign_fastest_option(c)
+            if c.is_legit(self.min, self.max):
+                decision = self.assign_fastest_option(c)
+                step[5] = decision
             time = new_time
-            step[5] = decision
 
-        write_answers(output, flow)
+        write_answers(flow, output)
 
     def assign_fastest_option(self, call: Call):
         c_type = call.type
@@ -118,7 +122,9 @@ class Building:
         min_time = self.elevators[0].time(c_src, c_dest)
         min_elev = 0
         # find elevators with same state / at zero state
-        for (i, elev) in self.elevators:
+        for i in range(len(self.elevators)):
+            elev = self.elevators[i]
+
             if elev.state == 0:
                 curr_time = elev.time(c_src, c_dest)
                 if min_time > curr_time:
@@ -162,22 +168,22 @@ class Building:
         while(dt > 0):                  #while there is time
             dest = self.control_panel[i][0]
 
-            t = elev.time(elev.flour, dest)
+            t = elev.time(elev.floor, dest)
             if t <= dt:                         #if possibale go to the next location
-                elev.flour = dest
+                elev.floor = dest
                 self.control_panel[i].pop(0)
                 dt -= t
             elif t - elev.openTime - elev.stopTime <= dt:          # if you can reach destination but
-                elev.flour = dest                                  # not yet can stop and open
+                elev.floor = dest                                  # not yet can stop and open
                 break
             else:                                                  # if you cant reach at all
                 dt -= elev.startTime + elev.closeTime              #close and start moving
                 if dt > 0:                                         #if you atlist managed that
                     elev.inMotion = True                           #you will advance a bit
-                    if dest - elev.flour > 0:
-                        elev.flour += dt * elev.speed    #going upwards
+                    if dest - elev.floor > 0:
+                        elev.floor += dt * elev.speed    #going upwards
                     else:
-                        elev.flour -= dt * elev.speed    #      downwards
+                        elev.floor -= dt * elev.speed    #      downwards
 
 
 

@@ -19,7 +19,7 @@ if __name__ == '__main__':
     elevs = bld.elevators
 
     for i in range(len(elevs)):
-        elevs[i].flour = i
+        elevs[i].floor = i
 
     # simulating case
     calls = [[1,3,5,6],
@@ -72,5 +72,5 @@ if __name__ == '__main__':
         print(expected_remaning_calls[i] == bld.control_panel[i])
 
     for i in range(len(bld.elevators)):
-        print(bld.elevators[i].flour)
+        print(bld.elevators[i].floor)
 
