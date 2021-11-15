@@ -91,7 +91,7 @@ class Building:
                 dest = missions[i]
                 time += self.elevators[elev_num].time(source, dest)
                 source = dest
-                i +=1
+                i += 1
 
         time += self.elevators[elev_num].time(source, call.src)
 
@@ -102,13 +102,14 @@ class Building:
         flow = get_flow(input)
 
         for step in flow:
-            c = Call(step[2], step[3])
+            c = Call.Call(step[2], step[3])
             new_time = step[1]
             dt = new_time - time
             self.recalculate(dt)
-            decision = self.assign_fastest_option(c)
+            if c.is_legit(self.min, self.max):
+                decision = self.assign_fastest_option(c)
+                step[5] = decision
             time = new_time
-            step[5] = decision
 
         write_answers(output, flow)
 
@@ -151,13 +152,13 @@ class Building:
 
         return min_elev
 
-    def recalculate(self, dt):  # dt is the passage of time(d - differnce)
+    def recalculate(self, dt):  # dt is the passage of time(d - difference)
         for i in range(len(self.control_panel)):
             self.advance(i, dt)
 
     def advance(self, i, dt):
         elev = self.elevators[i]
-        while(dt > 0):
+        while dt > 0:
             dest = self.control_panel[i][0]
 
             t = elev.time(elev.flour, dest)
