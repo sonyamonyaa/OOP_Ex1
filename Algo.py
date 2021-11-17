@@ -1,5 +1,7 @@
 import json
 import csv
+import math
+
 import Elevator
 import Call
 
@@ -119,17 +121,18 @@ class Building:
         c_type = call.type
         c_src = call.src
         c_dest = call.dest
-        min_time = self.elevators[0].time(c_src, c_dest)
+        min_time = math.inf
         min_elev = 0
         # find elevators with same state / at zero state
         for i in range(len(self.elevators)):
             elev = self.elevators[i]
 
             if elev.state == 0:
-                curr_time = elev.time(c_src, c_dest)
+                curr_time = self.travel_time(i, call)
                 if min_time > curr_time:
                     min_time = curr_time
                     min_elev = i
+
             # for same state check dist, if negative, irrelevant
             elif c_type == elev.state:
                 dist = (c_src - elev.floor) * elev.state
@@ -162,10 +165,11 @@ class Building:
                 self.advance(i, dt)
             except:
                 pass
+            finally:
+                if len(self.control_panel[i]) == 0:
+                    self.elevators[i].state = 0
 
     def advance(self, i, dt):
-        if len(self.control_panel[i]) == 0:
-            return
         elev = self.elevators[i]
 
         while(dt > 0):                  #while there is time
@@ -188,5 +192,3 @@ class Building:
                     else:
                         elev.floor -= dt * elev.speed    #      downwards
 
-        if len(self.control_panel[i]):
-            elev.state = 0
