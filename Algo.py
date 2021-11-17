@@ -38,13 +38,13 @@ def initiate_elevator(data):
 
 def addAscend(lst, val):
     i = 0
-    while lst[i] < val:
+    while i < len(lst) and lst[i] < val:
         i +=1
     lst.insert(i, val)
 
 def addDescend(lst, val):
     i = 0
-    while lst[i] > val:
+    while i < len(lst) and lst[i] > val:
         i += 1
     lst.insert(i, val)
 
@@ -158,7 +158,10 @@ class Building:
 
     def recalculate(self, dt):  # dt is the passage of time(d - differnce)
         for i in range(len(self.control_panel)):
-            self.advance(i, dt)
+            try:
+                self.advance(i, dt)
+            except:
+                pass
 
     def advance(self, i, dt):
         if len(self.control_panel[i]) == 0:
@@ -185,5 +188,5 @@ class Building:
                     else:
                         elev.floor -= dt * elev.speed    #      downwards
 
-
-
+        if len(self.control_panel[i]):
+            elev.state = 0

@@ -29,5 +29,5 @@ def answer(path, data):
 
 
 if __name__ == '__main__':
-    Path = r"C:\Users\ישראל\Downloads\computer sincse\OOP\Assignments\Ex1\data\Ex1_Calls_case_2_b.csv"
+    Path = r"C:\Users\ישראל\Downloads\computer sincse\OOP\Assignments\Ex1\data\simple_test_a.csv"
     answer(Path, getCalls(Path))
