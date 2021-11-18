@@ -38,13 +38,15 @@ def initiate_elevator(data):
     elev.stopTime = data[7]
     return elev
 
-def addAscend(lst, val):
+
+def add_ascend(lst, val):
     i = 0
     while i < len(lst) and lst[i] < val:
-        i +=1
+        i += 1
     lst.insert(i, val)
 
-def addDescend(lst, val):
+
+def add_descend(lst, val):
     i = 0
     while i < len(lst) and lst[i] > val:
         i += 1
@@ -85,14 +87,14 @@ class Building:
                 dest = missions[i]
                 time += self.elevators[elev_num].time(source, dest)
                 source = dest
-                i +=1
+                i += 1
         else:
             i = 0
             while (i < len(missions)) and (missions[i] > call.src):
                 dest = missions[i]
                 time += self.elevators[elev_num].time(source, dest)
                 source = dest
-                i +=1
+                i += 1
 
         time += self.elevators[elev_num].time(source, call.src)
 
@@ -147,11 +149,11 @@ class Building:
         elev = self.elevators[min_elev]
         elev_missions = self.control_panel[min_elev]
         if elev.state == 1:
-            addAscend(elev_missions, c_src)
-            addAscend(elev_missions, c_dest)
+            add_ascend(elev_missions, c_src)
+            add_ascend(elev_missions, c_dest)
         elif elev.state == -1:
-            addDescend(elev_missions, c_src)
-            addDescend(elev_missions, c_dest)
+            add_descend(elev_missions, c_src)
+            add_descend(elev_missions, c_dest)
         else:
             elev.state = c_type
             elev_missions.append(c_src)
@@ -159,7 +161,7 @@ class Building:
 
         return min_elev
 
-    def recalculate(self, dt):  # dt is the passage of time(d - differnce)
+    def recalculate(self, dt):  # dt is the passage of time(d - difference)
         for i in range(len(self.control_panel)):
             try:
                 self.advance(i, dt)
@@ -172,23 +174,25 @@ class Building:
     def advance(self, i, dt):
         elev = self.elevators[i]
 
-        while(dt > 0):                  #while there is time
+        while dt > 0:  # while there is time
             dest = self.control_panel[i][0]
 
             t = elev.time(elev.floor, dest)
-            if t <= dt:                         #if possibale go to the next location
+            # if possible go to the next location
+            if t <= dt:
                 elev.floor = dest
                 self.control_panel[i].pop(0)
                 dt -= t
-            elif t - elev.openTime - elev.stopTime <= dt:          # if you can reach destination but
-                elev.floor = dest                                  # not yet can stop and open
+            # if you can reach destination but not yet can stop and open
+            elif t - elev.openTime - elev.stopTime <= dt:
+                elev.floor = dest
                 break
-            else:                                                  # if you cant reach at all
-                dt -= elev.startTime + elev.closeTime              #close and start moving
-                if dt > 0:                                         #if you atlist managed that
-                    elev.inMotion = True                           #you will advance a bit
+            # if you cant reach at all
+            else:
+                dt -= elev.startTime + elev.closeTime  # close and start moving
+                if dt > 0:  # if you at least managed that
+                    elev.inMotion = True  # you will advance a bit
                     if dest - elev.floor > 0:
-                        elev.floor += dt * elev.speed    #going upwards
+                        elev.floor += dt * elev.speed  # going upwards
                     else:
-                        elev.floor -= dt * elev.speed    #      downwards
-
+                        elev.floor -= dt * elev.speed  # downwards

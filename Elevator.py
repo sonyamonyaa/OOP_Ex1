@@ -24,9 +24,6 @@ class Elevator:
         s += "floor: " + str(self.floor)
         return s
 
-        self.state = 0  # 0 - resting, -1 - going down, 1 - going up
-        self.floor = 0
-
     def time(self, source, dest):
         t = ((math.fabs(source - dest)) / self.speed) + self.openTime + self.closeTime + self.startTime + self.stopTime
 
