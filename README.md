@@ -11,7 +11,7 @@ and would traverse the input file row by row and in each iteration it would:
 similar to an online algorithm but to take advantage of all the data at once is
 actually harder, so we built some kind of simulation using 3 classes - Call, Elevator and Algo.
 
-###Elevator
+### Elevator
 represents an elevator, holding the time parameters 
 (speed, closing time, starting time etc.) 
 and calculates the overall time of an elevator.
@@ -29,18 +29,18 @@ State "1" elevators would get new calls in ascended order and a
 state "-1" elevators would get new calls in descended order
 
 can be tested by making comparisons of given parameters and check the time
-###Call
+### Call
 Represents an elevator call, holds the parameters source, destination and its type (up/down). 
 also checks legitimacy of a call within given range (max and min floors of a building)
 
 Can be tested by making comparisons of given parameters
 and checking legitimacy within range and out of range
 
-###Algo
+### Algo
 The algorithm class which holds several functions and 
 the building class to provide the optimal solutions.
 
-#####functions
+##### functions
 + get_flow - reads the csv input.
 + write_answers - writes the csv output, with 
 the allocation for each call
@@ -49,7 +49,7 @@ according to given data (json file)
 + add ascend/descend - each adds a call to a list 
 in ascending / descending order
 
-#####Building
+##### Building
 + init - creates a list of elevators from given data and a control panel of pending calls for each elevator
 + travel time - calculates the overall travel time of an elevator with given call
 + activate - reads the given calls file and for each call assigns an elevator and in the end writes the output 
