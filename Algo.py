@@ -22,7 +22,7 @@ def get_flow(path):
 
 def write_answers(data, output):
     try:
-        with open(output, 'w') as fl:
+        with open(output, 'w', newline = "") as fl:
             csvw = csv.writer(fl)
             csvw.writerows(data)
     except IOError as e:
