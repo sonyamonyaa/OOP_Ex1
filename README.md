@@ -56,3 +56,9 @@ in ascending / descending order
 + assign fastest option - the assigning function, uses the travel time to find the optimal elevator of a given call and appends accordingly the call to control panel
 + recalculate - calculates the passage of time
 + advance - updates the elevator locations
+
+##### the data folder contains:
++ call cases  
++ instances of building in jason format
++ actuall results of the program
++ an ampty csv file for output 
