@@ -9,10 +9,10 @@ bld = Algo.Building(Path)
 if __name__ == '__main__':
 
     #making sure everything is fine with the initiation
-    #print(bld.min, " ", bld.max)
-    #for i in bld.elevators:
-    #    print(i, '\n')
-    #print(bld.control_panel)
+    print(bld.min, " ", bld.max)
+    for i in bld.elevators:
+        print(i, '\n')
+    print(bld.control_panel)
 
 
     #building the acctual test for the 'travel_time' function
